@@ -1247,12 +1247,16 @@
 			device_type = "cpu";
 			compatible = "nvidia,tegra132-denver";
 			reg = <0>;
+			enable-method = "spin-table";
+			cpu-release-addr = <0x8000fff8>;
 		};
 
 		cpu@1 {
 			device_type = "cpu";
 			compatible = "nvidia,tegra132-denver";
 			reg = <1>;
+			enable-method = "spin-table";
+			cpu-release-addr = <0x8000fff8>;
 		};
 	};
 
