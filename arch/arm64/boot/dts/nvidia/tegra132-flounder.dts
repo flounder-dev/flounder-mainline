@@ -685,9 +685,10 @@
 				};
 			};
 
-			usb-vid {
+			palmas_usb: palmas-usb {
 				compatible = "ti,palmas-usb-vid";
 				ti,wakeup;
+				ti,enable-vbus-detection;
 			};
 
 			clk32k_in: clock {
@@ -1001,7 +1002,7 @@
 		compatible = "nvidia,tegra124-udc";
 		status = "okay";
 		dr_mode = "otg";
-		extcon = <0>, <&extcon_usb_otg>;
+		extcon = <&palmas_usb>, <&extcon_usb_otg>;
 		vbus-supply = <&vbus_usb_otg>;
 	};
 
