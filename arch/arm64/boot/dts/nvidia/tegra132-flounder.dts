@@ -579,7 +579,7 @@
 		ina230@40 {
 			compatible = "ti,ina230";
 			reg = <0x40>;
-			shunt-resistor = <10>;
+			shunt-resistor = <10000>;
 		};
 
 		/* TODO: Audio Amplifier */
