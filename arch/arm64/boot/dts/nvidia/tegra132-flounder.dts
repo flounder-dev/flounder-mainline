@@ -634,6 +634,8 @@
 			interrupt-controller;
 			#interrupt-cells = <2>;
 
+			ti,system-power-controller;
+
 			palmas_gpio: gpio {
 				compatible = "ti,tps65913-gpio";
 				gpio-controller;
@@ -698,7 +700,6 @@
 
 			pmic {
 				compatible = "ti,tps65913-pmic", "ti,palmas-pmic";
-				ti,system-power-controller;
 
 				smps1-in-supply = <&vdd_battery>;
 				smps4-in-supply = <&vdd_battery>;
