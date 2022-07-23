@@ -504,6 +504,9 @@
 		battery: max17050@36 {
 			compatible = "maxim,max17050";
 			reg = <0x36>;
+			maxim,cold-temp = <(-1)>;
+			maxim,over-heat-temp = <551>;
+			maxim,over-volt = <4352>;
 		};
 
 		/* BROKEN: Ambient Light Sensor */
