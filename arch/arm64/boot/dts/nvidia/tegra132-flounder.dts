@@ -68,6 +68,8 @@
 			status = "okay";
 			avdd-dsi-csi-supply = <&avdd_dsi_csi>;
 			nvidia,ganged-mode = <&dsib>;
+			#address-cells = <1>;
+			#size-cells = <0>;
 
 			panel_primary: panel@0 {
 				compatible = "jdi,lpm089a128a";
@@ -84,6 +86,8 @@
 		dsib: dsi@54400000 {
 			status = "okay";
 			avdd-dsi-csi-supply = <&avdd_dsi_csi>;
+			#address-cells = <1>;
+			#size-cells = <0>;
 
 			panel_secondary: panel@0 {
 				compatible = "jdi,lpm089a128a";
