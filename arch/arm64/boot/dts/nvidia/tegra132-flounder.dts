@@ -1080,6 +1080,12 @@
 		};
 	};
 
+	clock@70040084 {
+		status = "okay";
+		vdd-cpu-supply = <&vdd_cpu>;
+		nvidia,i2c-fs-rate = <400000>;
+	};
+
 	/* NEEDS WORK: USB */
 	padctl@7009f000 {
 		status = "okay";
