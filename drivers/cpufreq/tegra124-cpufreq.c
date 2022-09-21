@@ -198,6 +198,7 @@ static int __init tegra_cpufreq_init(void)
 	struct platform_device *pdev;
 
 	if (!(of_machine_is_compatible("nvidia,tegra124") ||
+		of_machine_is_compatible("nvidia,tegra132") ||
 		of_machine_is_compatible("nvidia,tegra210")))
 		return -ENODEV;
 

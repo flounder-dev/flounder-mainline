@@ -88,7 +88,9 @@ static const struct cvb_table tegra132_cpu_cvb_tables[] = {
 	{
 		.speedo_id = 1,
 		.process_id = -1,
-		.min_millivolts = 800,
+		/* HACK: a good way to set certain parameters by speedo value is needed, for now assume worst case */
+		/*.min_millivolts = 800,*/
+		.min_millivolts = 900,
 		.max_millivolts = 1260,
 		.speedo_scale = 100,
 		.voltage_scale = 1000,
@@ -120,8 +122,11 @@ static const struct cvb_table tegra132_cpu_cvb_tables[] = {
 			{          0UL, {       0,      0,   0 } },
 		},
 		.cpu_dfll_data = {
-			.tune0_low = 0x008a15ff,
-			.tune0_high = 0x008a40ff,
+			/* HACK: See above */
+			/*.tune0_low = 0x008a15ff,
+			.tune0_high = 0x008a40ff,*/
+			.tune0_low = 0x008715ff,
+			.tune0_high = 0x008740ff,
 			.tune1 = 0x00000095,
 		}
 	},
@@ -603,6 +608,11 @@ static int get_alignment_from_regulator(struct device *dev,
 
 	align->offset_uv = regulator_list_voltage(reg, 0);
 	align->step_uv = regulator_get_linear_step(reg);
+
+	/* HACK: vdd-cpu in flounder seems to report 0 as its step size? */
+	if (align->step_uv == 0) {
+		align->step_uv = 10000;
+	}
 
 	regulator_put(reg);
 

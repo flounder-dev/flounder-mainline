@@ -1201,11 +1201,7 @@
 	/* CPU */
 	cpus {
 		cpu@0 {
-			cpu-supply = <&vdd_cpu>;
-		};
-
-		cpu@1 {
-			cpu-supply = <&vdd_cpu>;
+			vdd-cpu-supply = <&vdd_cpu>;
 		};
 	};
 
