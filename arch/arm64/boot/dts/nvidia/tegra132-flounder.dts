@@ -667,8 +667,6 @@
 
 	/* I2C 0 */
 	i2c@7000c000 {
-		#address-cells = <1>;
-		#size-cells = <0>;
 		status = "okay";
 		clock-frequency = <400000>;
 
@@ -726,8 +724,6 @@
 
 	/* I2C 1 */
 	i2c@7000c400 {
-		#address-cells = <1>;
-		#size-cells = <0>;
 		status = "okay";
 		clock-frequency = <400000>;
 
@@ -769,8 +765,6 @@
 
 	/* I2C 2 */
 	i2c@7000c500 {
-		#address-cells = <1>;
-		#size-cells = <0>;
 		status = "okay";
 		clock-frequency = <400000>;
 
@@ -798,8 +792,6 @@
 
 	/* I2C 4 */
 	i2c@7000d000 {
-		#address-cells = <1>;
-		#size-cells = <0>;
 		status = "okay";
 		clock-frequency = <400000>;
 
@@ -807,9 +799,10 @@
 		palmas: tps65913@58 {
 			compatible = "ti,tps65913", "ti,palmas";
 			reg = <0x58>;
-			interrupts = <0 86 0>;
-			interrupt-controller;
+			interrupts = <GIC_SPI 86 IRQ_TYPE_NONE>;
+
 			#interrupt-cells = <2>;
+			interrupt-controller;
 
 			ti,system-power-controller;
 
