@@ -799,7 +799,7 @@
 		palmas: tps65913@58 {
 			compatible = "ti,tps65913", "ti,palmas";
 			reg = <0x58>;
-			interrupts = <GIC_SPI 86 IRQ_TYPE_NONE>;
+			interrupts = <GIC_SPI 86 IRQ_TYPE_LEVEL_HIGH>;
 
 			#interrupt-cells = <2>;
 			interrupt-controller;
@@ -1075,6 +1075,10 @@
 		};
 	};
 
+	pmc@7000e400 {
+		nvidia,invert-interrupt;
+	};
+
 	clock@70040084 {
 		status = "okay";
 		vdd-cpu-supply = <&vdd_cpu>;
@@ -1084,6 +1088,11 @@
 	/* NEEDS WORK: USB */
 	padctl@7009f000 {
 		status = "okay";
+
+		avdd-pll-utmip-supply = <&vdd_1v8>;
+		avdd-pll-erefe-supply = <&avdd_pll>;
+		avdd-pex-pll-supply = <&avdd_pll>;
+		hvdd-pex-pll-e-supply = <&avdd_usb>;
 
 		pads {
 			usb2 {
@@ -1100,6 +1109,7 @@
 
 		ports {
 			usb2-0 {
+				vbus-supply = <&vbus_usb_otg>;
 				status = "okay";
 				mode = "otg";
 				usb-role-switch;
