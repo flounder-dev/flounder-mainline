@@ -94,13 +94,11 @@
 		};
 	};
 
-	/* GPU */
 	gpu@57000000 {
 		status = "okay";
 		vdd-supply = <&vdd_gpu>;
 	};
 
-	/* Pin Mux */
 	pinmux@70000868 {
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinmux_default>;
@@ -665,12 +663,10 @@
 		status = "disabled";
 	};
 
-	/* I2C 0 */
 	i2c@7000c000 {
 		status = "okay";
 		clock-frequency = <400000>;
 
-		/* Fuel Gauge */
 		/* NOTE: Enabling this breaks the battery meter in Android until the battery is disconnected */
 		battery: max17050@36 {
 			compatible = "maxim,max17050";
@@ -680,14 +676,13 @@
 			maxim,over-volt = <4352>;
 		};
 
-		/* BROKEN: Ambient Light Sensor */
+		/* BROKEN */
 		cm32181@48 {
 			compatible = "capella,cm3218";
 			status = "disabled";
 			reg = <0x48>;
 		};
 
-		/* Skin Temperature Sensor */
 		nct72@4c {
 			compatible = "onnn,nct1008";
 			reg = <0x4c>;
@@ -695,7 +690,6 @@
 			#thermal-sensor-cells = <1>;
 		};
 
-		/* Battery Charger */
 		bq24193@6b {
 			compatible = "ti,bq24192";
 			reg = <0x6b>;
@@ -707,14 +701,14 @@
 			vbus_usb_otg: usb-otg-vbus { };
 		};
 
-		/* TODO: HTC Sensor Hub */
+		/* NO DRIVER */
 		htc_mcu@72 {
 			compatible = "htc,sensorhub";
 			status = "disabled";
 			reg = <0x72>;
 		};
 
-		/* TODO: NFC */
+		/* NO DRIVER */
 		bcm20791@77 {
 			compatible = "broadcom,bcm20791";
 			status = "disabled";
@@ -722,40 +716,38 @@
 		};
 	};
 
-	/* I2C 1 */
 	i2c@7000c400 {
 		status = "okay";
 		clock-frequency = <400000>;
 
-		/* TODO: Audio Codec */
+		/* TODO */
 		rt5677@2d {
 			compatible = "realtek,rt5677";
 			status = "disabled";
 			reg = <0x2d>;
 		};
 
-		/* TODO: Audio Amplifier */
+		/* TODO */
 		tfa9895@34 {
 			compatible = "nxp,tfa9895";
 			status = "disabled";
 			reg = <0x34>;
 		};
 
-		/* TODO: Audio Amplifier */
+		/* TODO */
 		tfa9895l@35 {
 			compatible = "nxp,tfa9895";
 			status = "disabled";
 			reg = <0x35>;
 		};
 
-		/* Current sensor */
 		ina230@40 {
 			compatible = "ti,ina230";
 			reg = <0x40>;
 			shunt-resistor = <10000>;
 		};
 
-		/* TODO: Audio Amplifier */
+		/* TODO */
 		rt5506@52 {
 			compatible = "realtek,rt5506";
 			status = "disabled";
@@ -763,26 +755,25 @@
 		};
 	};
 
-	/* I2C 2 */
 	i2c@7000c500 {
 		status = "okay";
 		clock-frequency = <400000>;
 
-		/* TODO: Camera Autofocus */
+		/* TODO */
 		drv201@e {
 			compatible = "ti,drv201";
 			status = "disabled";
 			reg = <0x0e>;
 		};
 
-		/* TODO: Rear Camera */
+		/* TODO */
 		imx219@10 {
 			compatible = "sony,imx219";
 			status = "disabled";
 			reg = <0x10>;
 		};
 
-		/* TODO: Front Camera */
+		/* TODO */
 		ov9760@36 {
 			compatible = "omnivision,ov9760";
 			status = "disabled";
@@ -790,12 +781,10 @@
 		};
 	};
 
-	/* I2C 4 */
 	i2c@7000d000 {
 		status = "okay";
 		clock-frequency = <400000>;
 
-		/* PMIC */
 		palmas: tps65913@58 {
 			compatible = "ti,tps65913", "ti,palmas";
 			reg = <0x58>;
@@ -863,7 +852,7 @@
 				ti,enable-vbus-detection;
 			};
 
-			clk32k_in: clock {
+			clock {
 				compatible = "ti,palmas-clk32kg";
 				#clock-cells = <0>;
 			};
@@ -1028,11 +1017,9 @@
 		};
 	};
 
-	/* SPI 2 */
 	spi@7000d800 {
 		status = "okay";
 
-		/* Touchscreen */
 		touchscreen@0 {
 			compatible = "syna,rmi4-spi";
 			reg = <0>;
@@ -1058,16 +1045,14 @@
 		};
 	};
 
-	/* SPI 3 */
 	spi@7000da00 {
 		status = "okay";
 	};
 
-	/* SPI 4 */
 	spi@7000dc00 {
 		status = "okay";
 
-		/* TODO: Audio Codec */
+		/* TODO */
 		rt5677@0 {
 			compatible = "realtek,rt5677";
 			status = "disabled";
@@ -1085,7 +1070,7 @@
 		nvidia,i2c-fs-rate = <400000>;
 	};
 
-	/* NEEDS WORK: USB */
+	/* NEEDS WORK */
 	padctl@7009f000 {
 		status = "okay";
 
@@ -1117,7 +1102,6 @@
 		};
 	};
 
-	/* WiFi Power Switch */
 	pwrseq_wifi: pwrseq-wifi {
 		compatible = "mmc-pwrseq-simple";
 		reset-gpios = <&gpio TEGRA_GPIO(X, 7) GPIO_ACTIVE_LOW>;
@@ -1125,7 +1109,6 @@
 		power-off-delay-us = <300>;
 	};
 
-	/* WiFi */
 	mmc@700b0000 {
 		status = "okay";
 		bus-width = <4>;
@@ -1146,7 +1129,6 @@
 		};
 	};
 
-	/* eMMC */
 	mmc@700b0600 {
 		status = "okay";
 		bus-width = <8>;
@@ -1156,30 +1138,30 @@
 		vqmmc-supply = <&vdd_1v8>;
 	};
 
-	/* TODO: Audio */
+	/* TODO */
 	ahub@70300000 {
-		/* TODO: I2S 0 */
+		/* TODO */
 		i2s@70301000 {
 			status = "okay";
 		};
 
-		/* TODO: I2S 1 */
+		/* TODO */
 		i2s@70301100 {
 			status = "okay";
 		};
 
-		/* TODO: I2S 2 */
+		/* TODO */
 		i2s@70301200 {
 			status = "okay";
 		};
 
-		/* TODO: I2S 3 */
+		/* TODO */
 		i2s@70301300 {
 			status = "okay";
 		};
 	};
 
-	/* NEEDS WORK: USB Micro B */
+	/* NEEDS WORK */
 	extcon_usb_otg: extcon-usb-gpio {
 		compatible = "linux,extcon-usb-gpio";
 		id-gpio = <&gpio TEGRA_GPIO(W, 2) GPIO_ACTIVE_HIGH>;
@@ -1199,14 +1181,18 @@
 		vbus-supply = <&avdd_usb>;
 	};
 
-	/* CPU */
+	clk32k_in: clock-32k {
+		compatible = "fixed-clock";
+		clock-frequency = <32768>;
+		#clock-cells = <0>;
+	};
+
 	cpus {
 		cpu@0 {
 			vdd-cpu-supply = <&vdd_cpu>;
 		};
 	};
 
-	/* Buttons */
 	gpio-keys {
 		compatible = "gpio-keys";
 
@@ -1233,14 +1219,12 @@
 		};
 	};
 
-	/* Vibration Motor */
 	vibrator {
 		compatible = "gpio-vibrator";
 		enable-gpios = <&gpio TEGRA_GPIO(U, 3) GPIO_ACTIVE_HIGH>;
 		vcc-supply = <&vdd_battery>;
 	};
 
-	/* Battery */
 	vdd_battery: regulator-vdd-battery {
 		compatible = "regulator-fixed";
 		regulator-name = "vdd-battery";
@@ -1248,7 +1232,6 @@
 		regulator-boot-on;
 	};
 
-	/* LCD Power Switch */
 	avdd_lcd: regulator-avdd-lcd {
 		compatible = "regulator-fixed";
 		regulator-name = "avdd-lcd";
@@ -1258,7 +1241,6 @@
 		vin-supply = <&vdd_battery>;
 	};
 
-	/* LCD IO Power Switch */
 	iovdd_lcd: regulator-iovdd-lcd {
 		compatible = "regulator-fixed";
 		regulator-name = "iovdd-lcd";
