@@ -62,7 +62,7 @@
 		};
 	};
 
-	/* NEEDS WORK: Display Output */
+	/* NEEDS WORK */
 	host1x@50000000 {
 		dsi@54300000 {
 			status = "okay";
@@ -788,7 +788,7 @@
 		palmas: tps65913@58 {
 			compatible = "ti,tps65913", "ti,palmas";
 			reg = <0x58>;
-			interrupts = <GIC_SPI 86 IRQ_TYPE_LEVEL_HIGH>;
+			interrupts = <GIC_SPI 86 IRQ_TYPE_NONE>;
 
 			#interrupt-cells = <2>;
 			interrupt-controller;
@@ -901,6 +901,7 @@
 						regulator-max-microvolt = <1400000>;
 						regulator-always-on;
 						regulator-boot-on;
+						ti,roof-floor = <3>;
 					};
 
 					vdd_1v8: smps8 {
@@ -1019,6 +1020,7 @@
 
 	spi@7000d800 {
 		status = "okay";
+		spi-max-frequency = <25000000>;
 
 		touchscreen@0 {
 			compatible = "syna,rmi4-spi";
@@ -1047,10 +1049,12 @@
 
 	spi@7000da00 {
 		status = "okay";
+		spi-max-frequency = <25000000>;
 	};
 
 	spi@7000dc00 {
 		status = "okay";
+		spi-max-frequency = <25000000>;
 
 		/* TODO */
 		rt5677@0 {
@@ -1062,6 +1066,20 @@
 
 	pmc@7000e400 {
 		nvidia,invert-interrupt;
+		nvidia,suspend-mode = <0>;
+		nvidia,cpu-pwr-good-time = <500>;
+		nvidia,cpu-pwr-off-time = <300>;
+		nvidia,core-pwr-good-time = <641 3845>;
+		nvidia,core-pwr-off-time = <2000>;
+		nvidia,core-power-req-active-high;
+		nvidia,sys-clock-req-active-high;
+
+		i2c-thermtrip {
+			nvidia,i2c-controller-id = <4>;
+			nvidia,bus-addr = <0x58>;
+			nvidia,reg-addr = <0xa0>;
+			nvidia,reg-data = <0x0>;
+		};
 	};
 
 	clock@70040084 {
@@ -1200,8 +1218,8 @@
 			label = "Power";
 			gpios = <&gpio TEGRA_GPIO(Q, 0) GPIO_ACTIVE_LOW>;
 			linux,code = <KEY_POWER>;
+			debounce-interval = <20>;
 			wakeup-source;
-			debounce-interval = <20>;	
 		};
 
 		volume_down {
@@ -1250,6 +1268,96 @@
 		enable-active-high;
 		regulator-boot-on;
 		vin-supply = <&vdd_1v8>;
+	};
+
+	thermal-zones {
+		cpu-thermal {
+			trips {
+				cpu_shutdown_trip {
+					temperature = <95000>;
+					hysteresis = <1000>;
+					type = "critical";
+				};
+
+				cpu_shutdown_warn {
+					temperature = <93000>;
+					hysteresis = <0>;
+					type = "hot";
+				};
+
+				throttle-trip {
+					temperature = <83000>;
+					hysteresis = <1000>;
+					type = "passive";
+				};
+			};
+		};
+
+		mem-thermal {
+			trips {
+				mem_shutdown_trip {
+					temperature = <95000>;
+					hysteresis = <1000>;
+					type = "critical";
+				};
+
+				mem_shutdown_warn {
+					temperature = <93000>;
+					hysteresis = <0>;
+					type = "hot";
+				};
+
+				mem_throttle_trip {
+					temperature = <83000>;
+					hysteresis = <1000>;
+					type = "passive";
+				};
+			};
+		};
+
+		gpu-thermal {
+			trips {
+				gpu_shutdown_trip {
+					temperature = <95000>;
+					hysteresis = <1000>;
+					type = "critical";
+				};
+
+				gpu_shutdown_warn {
+					temperature = <93000>;
+					hysteresis = <0>;
+					type = "hot";
+				};
+
+				throttle-trip {
+					temperature = <83000>;
+					hysteresis = <1000>;
+					type = "passive";
+				};
+			};
+		};
+
+		pllx-thermal {
+			trips {
+				pllx_shutdown_trip {
+					temperature = <95000>;
+					hysteresis = <1000>;
+					type = "critical";
+				};
+
+				pllx_shutdown_warn {
+					temperature = <93000>;
+					hysteresis = <0>;
+					type = "hot";
+				};
+
+				pllx_throttle_trip {
+					temperature = <83000>;
+					hysteresis = <1000>;
+					type = "passive";
+				};
+			};
+		};
 	};
 
 };
