@@ -38,7 +38,7 @@ config TEGRA30_EMC
 config TEGRA124_EMC
 	tristate "NVIDIA Tegra124 External Memory Controller driver"
 	default y
-	depends on ARCH_TEGRA_124_SOC || COMPILE_TEST
+	depends on ARCH_TEGRA_124_SOC || ARCH_TEGRA_132_SOC || COMPILE_TEST
 	select TEGRA124_CLK_EMC if ARCH_TEGRA
 	select PM_OPP
 	help

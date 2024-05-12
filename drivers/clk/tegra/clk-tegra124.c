@@ -1411,10 +1411,16 @@ static void tegra124_clock_deassert_dfll_dvco_reset(void)
 	tegra124_car_barrier();
 }
 
+/* HACK: a good way to call the relevant t132 function on those chips is needed, for now hard code */
+/*       this breaks t124 obviously, too bad */
+void tegra132_clock_assert_dfll_dvco_reset(void);
+void tegra132_clock_deassert_dfll_dvco_reset(void);
+
 static int tegra124_reset_assert(unsigned long id)
 {
 	if (id == TEGRA124_RST_DFLL_DVCO)
-		tegra124_clock_assert_dfll_dvco_reset();
+		/*tegra124_clock_assert_dfll_dvco_reset();*/
+		tegra132_clock_assert_dfll_dvco_reset();
 	else
 		return -EINVAL;
 
@@ -1424,7 +1430,8 @@ static int tegra124_reset_assert(unsigned long id)
 static int tegra124_reset_deassert(unsigned long id)
 {
 	if (id == TEGRA124_RST_DFLL_DVCO)
-		tegra124_clock_deassert_dfll_dvco_reset();
+		/*tegra124_clock_deassert_dfll_dvco_reset();*/
+		tegra132_clock_deassert_dfll_dvco_reset();
 	else
 		return -EINVAL;
 

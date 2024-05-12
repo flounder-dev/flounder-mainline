@@ -277,7 +277,9 @@ static const struct tegra_fuse_info tegra124_fuse_info = {
 	.size = 0x300,
 	.spare = 0x200,
 };
+#endif
 
+#if defined(CONFIG_ARCH_TEGRA_124_SOC)
 const struct tegra_fuse_soc tegra124_fuse_soc = {
 	.init = tegra30_fuse_init,
 	.speedo_init = tegra124_init_speedo_data,
@@ -286,6 +288,18 @@ const struct tegra_fuse_soc tegra124_fuse_soc = {
 	.num_lookups = ARRAY_SIZE(tegra124_fuse_lookups),
 	.cells = tegra124_fuse_cells,
 	.num_cells = ARRAY_SIZE(tegra124_fuse_cells),
+	.soc_attr_group = &tegra_soc_attr_group,
+	.clk_suspend_on = true,
+};
+#endif
+
+#if defined(CONFIG_ARCH_TEGRA_132_SOC)
+const struct tegra_fuse_soc tegra132_fuse_soc = {
+	.init = tegra30_fuse_init,
+	.speedo_init = tegra132_init_speedo_data,
+	.info = &tegra124_fuse_info,
+	.lookups = tegra124_fuse_lookups,
+	.num_lookups = ARRAY_SIZE(tegra124_fuse_lookups),
 	.soc_attr_group = &tegra_soc_attr_group,
 	.clk_suspend_on = true,
 };

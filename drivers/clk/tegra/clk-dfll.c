@@ -747,14 +747,14 @@ static void dfll_init_out_if(struct tegra_dfll *td)
 	td->lut_safe = td->lut_min + (td->lut_min < td->lut_max ? 1 : 0);
 
 	/* clear DFLL_OUTPUT_CFG before setting new value */
-	dfll_writel(td, 0, DFLL_OUTPUT_CFG);
-	dfll_wmb(td);
+	dfll_i2c_writel(td, 0, DFLL_OUTPUT_CFG);
+	dfll_i2c_wmb(td);
 
 	val = (td->lut_safe << DFLL_OUTPUT_CFG_SAFE_SHIFT) |
 	      (td->lut_max << DFLL_OUTPUT_CFG_MAX_SHIFT) |
 	      (td->lut_min << DFLL_OUTPUT_CFG_MIN_SHIFT);
-	dfll_writel(td, val, DFLL_OUTPUT_CFG);
-	dfll_wmb(td);
+	dfll_i2c_writel(td, val, DFLL_OUTPUT_CFG);
+	dfll_i2c_wmb(td);
 
 	dfll_writel(td, 0, DFLL_OUTPUT_FORCE);
 	dfll_i2c_writel(td, 0, DFLL_INTR_EN);

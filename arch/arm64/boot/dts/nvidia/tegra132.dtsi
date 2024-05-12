@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <dt-bindings/clock/tegra124-car.h>
+#include <dt-bindings/clock/tegra132-ccplex.h>
 #include <dt-bindings/gpio/tegra-gpio.h>
 #include <dt-bindings/memory/tegra124-mc.h>
 #include <dt-bindings/pinctrl/pinctrl-tegra.h>
 #include <dt-bindings/pinctrl/pinctrl-tegra-xusb.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
+#include <dt-bindings/reset/tegra124-car.h>
 #include <dt-bindings/thermal/tegra124-soctherm.h>
 #include <dt-bindings/soc/tegra-pmc.h>
 
@@ -138,6 +140,38 @@
 			resets = <&tegra_car 51>;
 			reset-names = "hdmi";
 			status = "disabled";
+		};
+
+		dsia: dsi@54300000 {
+			compatible = "nvidia,tegra132-dsi";
+			reg = <0x0 0x54300000 0x0 0x00040000>;
+			clocks = <&tegra_car TEGRA124_CLK_DSIA>,
+				 <&tegra_car TEGRA124_CLK_DSIALP>,
+				 <&tegra_car TEGRA124_CLK_PLL_D_OUT0>;
+			clock-names = "dsi", "lp", "parent";
+			resets = <&tegra_car TEGRA124_CLK_DSIA>;
+			reset-names = "dsi";
+			nvidia,mipi-calibrate = <&mipi 0x060>; /* DSIA & DSIB pads */
+			status = "disabled";
+
+			#address-cells = <1>;
+			#size-cells = <0>;
+		};
+
+		dsib: dsi@54400000 {
+			compatible = "nvidia,tegra132-dsi";
+			reg = <0x0 0x54400000 0x0 0x00040000>;
+			clocks = <&tegra_car TEGRA124_CLK_DSIB>,
+				 <&tegra_car TEGRA124_CLK_DSIBLP>,
+				 <&tegra_car TEGRA124_CLK_PLL_D_OUT0>;
+			clock-names = "dsi", "lp", "parent";
+			resets = <&tegra_car TEGRA124_CLK_DSIB>;
+			reset-names = "dsi";
+			nvidia,mipi-calibrate = <&mipi 0x180>; /* DSIC & DSID pads */
+			status = "disabled";
+
+			#address-cells = <1>;
+			#size-cells = <0>;
 		};
 
 		sor@54540000 {
@@ -589,7 +623,7 @@
 	};
 
 	fuse@7000f800 {
-		compatible = "nvidia,tegra124-efuse";
+		compatible = "nvidia,tegra132-efuse";
 		reg = <0x0 0x7000f800 0x0 0x400>;
 		clocks = <&tegra_car TEGRA124_CLK_FUSE>;
 		clock-names = "fuse";
@@ -650,6 +684,37 @@
 			 <&tegra_car 128>, /* hda2hdmi */
 			 <&tegra_car 111>; /* hda2codec_2x */
 		reset-names = "hda", "hda2hdmi", "hda2codec_2x";
+		status = "disabled";
+	};
+
+	ccplex_clock: ccplex-clock@70040000 {
+		compatible = "nvidia,tegra132-ccplex-clk";
+		reg = <0x0 0x70040000 0x0 0x1000>;
+		status = "okay";
+		#clock-cells = <1>;
+	};
+
+	dfll: clock@70040084 {
+		compatible = "nvidia,tegra132-dfll";
+		reg = <0 0x70040084 0 0x100>, /* DFLL control */
+		      <0 0x70110000 0 0x100>, /* I2C output control */
+		      <0 0x70110100 0 0x100>, /* Integrated I2C controller */
+		      <0 0x70110200 0 0x100>; /* Look-up table RAM */
+		interrupts = <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>;
+		clocks = <&tegra_car TEGRA124_CLK_DFLL_SOC>,
+			 <&tegra_car TEGRA124_CLK_DFLL_REF>,
+			 <&tegra_car TEGRA124_CLK_I2C5>;
+		clock-names = "soc", "ref", "i2c";
+		resets = <&tegra_car TEGRA124_RST_DFLL_DVCO>;
+		reset-names = "dvco";
+		#clock-cells = <0>;
+		clock-output-names = "dfllCPU_out";
+		nvidia,sample-rate = <12500>;
+		nvidia,droop-ctrl = <0x00000f00>;
+		nvidia,force-mode = <1>;
+		nvidia,cf = <10>;
+		nvidia,ci = <0>;
+		nvidia,cg = <2>;
 		status = "disabled";
 	};
 
@@ -885,6 +950,13 @@
 				#cooling-cells = <2>;
 			};
 		};
+	};
+
+	mipi: mipi@700e3000 {
+	compatible = "nvidia,tegra132-mipi";
+	reg = <0x0 0x700e3000 0x0 0x100>;
+	clocks = <&tegra_car TEGRA124_CLK_MIPI_CAL>;
+	#nvidia,mipi-calibrate-cells = <1>;
 	};
 
 	ahub@70300000 {
@@ -1124,12 +1196,24 @@
 			device_type = "cpu";
 			compatible = "nvidia,tegra132-denver";
 			reg = <0>;
+			enable-method = "spin-table";
+			cpu-release-addr = <0x8000fff8>;
+
+			clocks = <&ccplex_clock TEGRA132_CCPLEX_CCLK_G>,
+				 <&ccplex_clock TEGRA132_PLL_X>,
+				 <&tegra_car TEGRA124_CLK_PLL_P>,
+				 <&dfll>;
+			clock-names = "cpu_g", "pll_x", "pll_p", "dfll";
+			/* FIXME: what's the actual transition time? */
+			clock-latency = <300000>;
 		};
 
 		cpu@1 {
 			device_type = "cpu";
 			compatible = "nvidia,tegra132-denver";
 			reg = <1>;
+			enable-method = "spin-table";
+			cpu-release-addr = <0x8000fff8>;
 		};
 	};
 
